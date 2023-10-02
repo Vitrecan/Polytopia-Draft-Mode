@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Polytopia Draft Mode</title>
+    </head>
+    <body>
+        <h2>Click the button to select a map:</h2>
+        <button onclick="selectMap()">Select!</button>
+        <p id="result"></p>
+        <script>
+            function selectMap() {
+                var maps = ["Drylands", "Lakes", "Continents", "Archipelago", "Water World"];
+                var result = maps[Math.floor(Math.random() * maps.length)];
+                document.getElementById("result").innerHTML = "Selected map: " + result;
+            }
+        </script>
+    </body>
+</html>
