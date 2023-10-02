@@ -4,20 +4,41 @@
         <title>Polytopia Draft Mode</title>
     </head>
     <body>
-        <h2>Click the button to select a map:</h2>
-        <button onclick="selectMap()">Select!</button>
-        <p id="result"></p>
-        <script>
-            function selectMap() {
-                var maps = ["Drylands", "Lakes", "Continents", "Archipelago", "Water World"];
-                var result = maps[Math.floor(Math.random() * maps.length)];
-                document.getElementById("result").innerHTML = "Selected map: " + result;
-            }
-            function selectSize() {
-                var sizes = ["Tiny: 121 tiles, 11x11", "Small: 196 tiles, 14x14", "Normal: 256 tiles, 16x16"
-                , "Large: 324 tiles, 18x18", "Huge: 400 tiles, 20x20", "Massive: 900 tiles, 30x30"];
-                var result
-            }
-        </script>
+
+    <h2>Select a map:</h2>
+
+    <button onclick="selectMap()">Select Map!</button>
+
+    <p id="mapResult"></p>
+
+    <h2>Select a map size:</h2>
+
+    <select id="sizeSelect">
+        <option value="Tiny: 121 tiles, 11x11">Tiny: 121 tiles, 11x11</option>
+        <option value="Small: 196 tiles, 14x14">Small: 196 tiles, 14x14</option>
+        <option value="Normal: 256 tiles, 16x16">Normal: 256 tiles, 16x16</option>
+        <option value="Large: 324 tiles, 18x18">Large: 324 tiles, 18x18</option>
+        <option value="Huge: 400 tiles, 20x20">Huge: 400 tiles, 20x20</option>
+        <option value="Massive: 900 tiles, 30x30">Massive: 900 tiles, 30x30</option>
+    </select>
+
+    <button onclick="selectSize()">Select Size!</button>
+
+    <p id="sizeResult"></p>
+
+    <script>
+        function selectMap() {
+            var maps = ["Drylands", "Lakes", "Continents", "Archipelago", "Water World"];
+            var result = maps[Math.floor(Math.random() * maps.length)];
+            document.getElementById("mapResult").innerHTML = "Selected map: " + result;
+        }
+
+        function selectSize() {
+            var e = document.getElementById("sizeSelect");
+            var result = e.options[e.selectedIndex].value;
+            document.getElementById("sizeResult").innerHTML = "Selected size: " + result;
+        }
+    </script>
+
     </body>
 </html>
