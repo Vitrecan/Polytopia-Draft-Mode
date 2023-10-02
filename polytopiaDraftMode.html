@@ -87,7 +87,7 @@
         }  
 
         function copyResults() {
-            var results = mapResult + sizeResult + 'Bans: ' + banResult.slice(0,-2);
+            var results = mapResult + ' ' + sizeResult + 'Bans: ' + banResult.slice(0,-2);
             navigator.clipboard.writeText(results).then(function() {
                 alert('Results copied to clipboard!');
             }, function(err) {
