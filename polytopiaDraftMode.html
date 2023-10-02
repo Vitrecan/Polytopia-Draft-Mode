@@ -14,13 +14,16 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+            #copyButton {
+                margin-top: 20px;
+            }
         </style>
     </head>
     <body>
 
     <h2>Select a map:</h2>
 
-    <button onclick="selectMap()">Select Map!</button>
+    <button onclick="selectMap()">Select Map</button>
 
     <p id="mapResult"></p>
 
@@ -35,7 +38,7 @@
         <option value="Massive: 900 tiles, 30x30">Massive: 900 tiles, 30x30</option>
     </select>
 
-    <button onclick="selectSize()">Select Size!</button>
+    <button onclick="selectSize()">Select Size</button>
 
     <p id="sizeResult"></p>
 
@@ -43,17 +46,25 @@
 
     <div id="tribes"></div>
 
+    <button id="copyButton" onclick="copyResults()">Copy Results</button>
+
     <script>
+        var mapResult = '';
+        var sizeResult = '';
+        var banResult = '';
+
         function selectMap() {
             var maps = ["Drylands", "Lakes", "Continents", "Archipelago", "Water World"];
             var result = maps[Math.floor(Math.random() * maps.length)];
-            document.getElementById("mapResult").innerHTML = "Selected map: " + result;
+            mapResult = "MAP: " + result;
+            document.getElementById("mapResult").innerHTML = mapResult;
         }
 
         function selectSize() {
             var e = document.getElementById("sizeSelect");
             var result = e.options[e.selectedIndex].value;
-            document.getElementById("sizeResult").innerHTML = "Selected size: " + result;
+            sizeResult = "Size: " + result;
+            document.getElementById("sizeResult").innerHTML = sizeResult;
         }
 
         var tribes = ["Xin-xi", "Imperius", "Bardur", "Oumaji", "Kickoo", "Hoodrick", "Luxidoor"
@@ -69,11 +80,21 @@
 
                 if (confirmBan) {
                     e.target.disabled = true;
+                    banResult += e.target.innerHTML + ', ';
                 }
             };
             document.getElementById("tribes").appendChild(button);
-        }
-    </script>
+        }  
+
+        function copyResults() {
+            var results = mapResult + sizeResult + 'Bans: ' + banResult.slice(0,-2);
+            navigator.clipboard.writeText(results).then(function() {
+                alert('Results copied to clipboard!');
+            }, function(err) {
+                alert('Could not copy text: ', err);
+            });
+}
+        </script>
 
     </body>
 </html>
