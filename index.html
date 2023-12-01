@@ -14,6 +14,9 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+            .banned {
+                background-color: grey;
+            }
             #copyButton {
                 margin-top: 20px;
             }
@@ -23,9 +26,9 @@
 
     <h2>Select a map:</h2>
 
-    <button onclick="selectMap()">Select Map</button>
+    <button onclick="select('map', ['Drylands', 'Lakes', 'Continents', 'Archipelago', 'Water World'])">Select Map</button>
 
-    <p id="mapResult"></p>
+    <p id="map"></p>
 
     <h2>Select a map size:</h2>
 
@@ -38,9 +41,9 @@
         <option value="Massive: 900 tiles, 30x30">Massive: 900 tiles, 30x30</option>
     </select>
 
-    <button onclick="selectSize()">Select Size</button>
+    <button onclick="select('size', [document.getElementById('sizeSelect').value])">Select Size</button>
 
-    <p id="sizeResult"></p>
+    <p id="size"></p>
 
     <h2>Ban a tribe:</h2>
 
@@ -49,51 +52,52 @@
     <button id="copyButton" onclick="copyResults()">Copy Results</button>
 
     <script>
-        var mapResult = '';
-        var sizeResult = '';
-        var banResult = '';
+        var results = {
+            map: '',
+            size: '',
+            bans: ''
+        };
 
-        function selectMap() {
-            var maps = ["Drylands", "Lakes", "Continents", "Archipelago", "Water World"];
-            var result = maps[Math.floor(Math.random() * maps.length)];
-            mapResult = "MAP: " + result;
-            document.getElementById("mapResult").innerHTML = mapResult;
+        function select(id, options) {
+            var result = options[Math.floor(Math.random() * options.length)];
+            results[id] = id.toUpperCase() + ": " + result;
+            document.getElementById(id).innerHTML = results[id];
         }
 
-        function selectSize() {
-            var e = document.getElementById("sizeSelect");
-            var result = e.options[e.selectedIndex].value;
-            sizeResult = "Size: " + result;
-            document.getElementById("sizeResult").innerHTML = sizeResult;
-        }
-
-        var tribes = ["Xin-xi", "Imperius", "Bardur", "Oumaji", "Kickoo", "Hoodrick", "Luxidoor"
-        , "Vengir", "Zebasi", "Ai-Mo", "Quetzali", "Yădakk", "Aquarion", "∑∫ỹriȱŋ", "Polaris", "Cymanti"];
-
-        for (var i = 0; i < tribes.length; i++) {
+        ["Xin-xi", "Imperius", "Bardur", "Oumaji", "Kickoo", "Hoodrick", "Luxidoor"
+        , "Vengir", "Zebasi", "Ai-Mo", "Quetzali", "Yădakk", "Aquarion", "∑∫ỹriȱŋ", "Polaris", "Cymanti"].forEach(function(tribe) {
             var button = document.createElement("button");
-            button.innerHTML = tribes[i];
+            button.innerHTML = tribe;
             button.className = "tribe-button";
 
             button.onclick = function(e) {
-                var confirmBan = confirm("Do you want to ban this tribe?");
-
-                if (confirmBan) {
-                    e.target.disabled = true;
-                    banResult += e.target.innerHTML + ', ';
+                if (!e.target.classList.contains('banned')) {
+                    var confirmBan = confirm("Do you want to ban this tribe?");
+                    if (confirmBan) {
+                        e.target.classList.add('banned');
+                        results.bans += e.target.innerHTML + ', ';
+                    }
                 }
             };
+
+            button.ondblclick = function(e) {
+                if (e.target.classList.contains('banned')) {
+                    e.target.classList.remove('banned');
+                    results.bans = results.bans.replace(e.target.innerHTML + ', ', '');
+                }
+            };
+
             document.getElementById("tribes").appendChild(button);
-        }  
+        });  
 
         function copyResults() {
-            var results = mapResult + '\n' + sizeResult + '\n' + 'Bans: ' + banResult.slice(0,-2);
-            navigator.clipboard.writeText(results).then(function() {
+            var resultsText = Object.values(results).join('\n');
+            navigator.clipboard.writeText(resultsText).then(function() {
                 alert('Results copied to clipboard!');
             }, function(err) {
                 alert('Could not copy text: ', err);
             });
-}
+        }
         </script>
 
     </body>
